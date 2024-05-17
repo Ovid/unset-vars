@@ -14,7 +14,7 @@ static int unset_mg_set(pTHX_ SV *sv, MAGIC *mg) {
     return 0;
 }
 
-SV* get_unset(pTHX) {
+static SV* S_unset(pTHX) {
     SV *sv;
     MAGIC *mg;
 
@@ -28,8 +28,9 @@ SV* get_unset(pTHX) {
 
     return sv;
 }
+#define unset() S_unset(aTHX)
 
-int is_unset(pTHX_ SV *sv) {
+static bool S_is_unset(pTHX_ SV *sv) {
     MAGIC *mg;
 
     if (SvTYPE(sv) >= SVt_PVAV) {
@@ -39,33 +40,15 @@ int is_unset(pTHX_ SV *sv) {
     mg = mg_findext(sv, PERL_MAGIC_ext, &unset_mg_vtbl);
     return cBOOL(mg);
 }
-
-int is_set(pTHX_ SV *sv) {
-    return !is_unset(aTHX_ sv);  // Return true if SV is not unset
-}
+#define is_unset(sv) S_is_unset(aTHX_ sv)
+#define is_set(sv) (!is_unset(sv))
 
 MODULE = Unset::Vars    PACKAGE = Unset::Vars
 
-SV*
-unset()
-    CODE:
-    RETVAL = get_unset(aTHX);
-    OUTPUT:
-    RETVAL
+PROTOTYPES: DISABLE
 
-bool
-is_unset(SV *sv)
-    PROTOTYPE: $
-    CODE:
-    RETVAL = is_unset(aTHX_ sv);
-    OUTPUT:
-    RETVAL
+SV* unset()
 
-bool
-is_set(SV *sv)
-    PROTOTYPE: $
-    CODE:
-    RETVAL = is_set(aTHX_ sv);
-    OUTPUT:
-    RETVAL
+bool is_unset(SV *sv)
 
+bool is_set(SV *sv)
