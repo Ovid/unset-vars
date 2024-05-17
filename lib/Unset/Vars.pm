@@ -10,7 +10,7 @@ our @EXPORT = qw(unset is_unset is_set);
 
 our $VERSION = '0.01';
 
-XSLoader::load('unset', $VERSION);
+XSLoader::load('Unset::Vars', $VERSION);
 
 1;
 
