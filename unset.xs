@@ -6,10 +6,6 @@ typedef struct {
     int is_unset;
 } unset_t;
 
-static int unset_mg_get(pTHX_ SV *sv, MAGIC *mg) {
-    return 0;
-}
-
 static int unset_mg_set(pTHX_ SV *sv, MAGIC *mg) {
     unset_t *unset_info = (unset_t *)mg->mg_ptr;
     unset_info->is_unset = 0;
@@ -23,7 +19,7 @@ static int unset_mg_free(pTHX_ SV *sv, MAGIC *mg) {
 }
 
 static const MGVTBL unset_mg_vtbl = {
-    unset_mg_get,
+    NULL,
     unset_mg_set,
     NULL,
     NULL,
