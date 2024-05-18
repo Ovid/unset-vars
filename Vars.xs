@@ -22,10 +22,6 @@ static SV* S_unset(pTHX) {
 
     sv_magicext(sv, NULL, PERL_MAGIC_ext, &unset_mg_vtbl, NULL, 0);
 
-    // I don't think is needed, but I'm trying to figure out why this doesn't
-    // work
-    SvREFCNT_inc_simple_void_NN(sv);  // Increment reference count to prevent premature garbage collection
-
     return sv;
 }
 #define unset() S_unset(aTHX)
