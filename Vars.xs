@@ -29,10 +29,6 @@ static SV* S_unset(pTHX) {
 static bool S_is_unset(pTHX_ SV *sv) {
     MAGIC *mg;
 
-    if (SvTYPE(sv) >= SVt_PVAV) {
-        croak("is_unset can only be applied to scalars");
-    }
-
     mg = mg_findext(sv, PERL_MAGIC_ext, &unset_mg_vtbl);
     return cBOOL(mg);
 }
