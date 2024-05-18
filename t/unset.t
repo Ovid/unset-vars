@@ -7,7 +7,7 @@ use Unset::Vars;
 my $var = unset;
 
 ok is_unset($var), 'var should start as unset';
-ok !is_unset($var), 'var should not be set';
+ok !is_set($var), 'var should not be set';
 
 $var = "something";
 
