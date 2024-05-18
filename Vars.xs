@@ -15,24 +15,13 @@ static int unset_mg_set(pTHX_ SV *sv, MAGIC *mg) {
 }
 
 static SV* S_unset(pTHX) {
-    SV *sv;
-    MAGIC *mg;
-
-    sv = newSV(0);  // Create a new undefined scalar
-
+    SV* sv = newSV(0);  // Create a new undefined scalar
     sv_magicext(sv, NULL, PERL_MAGIC_ext, &unset_mg_vtbl, NULL, 0);
-
     return sv;
 }
 #define unset() S_unset(aTHX)
 
-static bool S_is_unset(pTHX_ SV *sv) {
-    MAGIC *mg;
-
-    mg = mg_findext(sv, PERL_MAGIC_ext, &unset_mg_vtbl);
-    return cBOOL(mg);
-}
-#define is_unset(sv) S_is_unset(aTHX_ sv)
+#define is_unset(sv) cBOOL(mg_findext(sv, PERL_MAGIC_ext, &unset_mg_vtbl))
 #define is_set(sv) (!is_unset(sv))
 
 MODULE = Unset::Vars    PACKAGE = Unset::Vars
